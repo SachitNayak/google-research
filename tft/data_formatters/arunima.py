@@ -9,6 +9,7 @@ GenericDataFormatter = data_formatters.base.GenericDataFormatter
 DataTypes = data_formatters.base.DataTypes
 InputTypes = data_formatters.base.InputTypes
 
+
 # Implement formatting functions
 class ArunimaFormatter(GenericDataFormatter):
     """Defines and formats data for the arunima f5 dataset.
@@ -24,7 +25,7 @@ class ArunimaFormatter(GenericDataFormatter):
 
     # This defines the types used by each column
     _column_definition = [
-        ('id', DataTypes.REAL_VALUED, InputTypes.ID),  
+        ('id', DataTypes.REAL_VALUED, InputTypes.ID),
         ('day', DataTypes.CATEGORICAL, InputTypes.KNOWN_INPUT),
         ('month', DataTypes.CATEGORICAL, InputTypes.KNOWN_INPUT),
         ('date', DataTypes.CATEGORICAL, InputTypes.KNOWN_INPUT),
@@ -70,9 +71,9 @@ class ArunimaFormatter(GenericDataFormatter):
         column_definitions = self.get_column_definition()
         print(column_definitions)
         id_column = utils.get_single_col_by_input_type(InputTypes.ID,
-                                                        column_definitions)
+                                                       column_definitions)
         target_column = utils.get_single_col_by_input_type(InputTypes.TARGET,
-                                                            column_definitions)
+                                                           column_definitions)
 
         # Extract identifiers in case required
         self.identifiers = list(df[id_column].unique())
@@ -101,12 +102,12 @@ class ArunimaFormatter(GenericDataFormatter):
 
         categorical_scalers = {}
         num_classes = []
-        num_labels = [str(i) for i in range(1,41)]
-        day_labels = [str(i) for i in range(1,8)]
-        date_labels = [str(i) for i in range(1,32)]
-        month_labels = [str(i) for i in range(1,13)]
+        num_labels = [str(i) for i in range(1, 41)]
+        day_labels = [str(i) for i in range(1, 8)]
+        date_labels = [str(i) for i in range(1, 32)]
+        month_labels = [str(i) for i in range(1, 13)]
         year_labels = [str(i) for i in range(1992, 2021)]
-        second_labels = [str(i) for i in [5,15,25,35,45]]
+        second_labels = [str(i) for i in [5, 15, 25, 35, 45]]
         for col in categorical_inputs:
             vals = None
             if col == 'day':
@@ -121,7 +122,7 @@ class ArunimaFormatter(GenericDataFormatter):
                 vals = second_labels
             else:
                 vals = num_labels
-            
+
             categorical_scalers[col] = sklearn.preprocessing.LabelEncoder().fit(
                 vals)
             num_classes.append(len(vals))
@@ -185,15 +186,13 @@ class ArunimaFormatter(GenericDataFormatter):
 
         return output
 
-
     def get_fixed_params(self):
         """Returns fixed model parameters for experiments."""
 
         fixed_params = {
-            'total_time_steps': 8*24,     # Total width of the Temporal Fusion Decoder
-            'num_encoder_steps': 7*24,    # Length of LSTM decoder (ie. # historical inputs)
-            'num_epochs': 100,            # Max number of epochs for training
-            'early_stopping_patience': 5, # Early stopping threshold for # iterations with no loss improvement
+            'total_time_steps': 8 * 24,  # Total width of the Temporal Fusion Decoder
+            'num_encoder_steps': 7 * 24,  # Length of LSTM decoder (ie. # historical inputs)
+            'num_epochs': 100,  # Max number of epochs for training
+            'early_stopping_patience': 5,  # Early stopping threshold for # iterations with no loss improvement
             'multiprocessing_workers': 5  # Number of multi-processing workers
         }
-
