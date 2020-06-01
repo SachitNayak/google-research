@@ -199,9 +199,9 @@ class ArunimaFormatter(GenericDataFormatter):
         fixed_params = {
             'total_time_steps': 500,  # Total width of the Temporal Fusion Decoder
             'num_encoder_steps': 499,  # Length of LSTM decoder (ie. # historical inputs)
-            'num_epochs': 10,  # Max number of epochs for training
+            'num_epochs': 3,  # Max number of epochs for training
             'early_stopping_patience': 5,  # Early stopping threshold for # iterations with no loss improvement
-            'multiprocessing_workers': 10  # Number of multi-processing workers
+            'multiprocessing_workers': 15  # Number of multi-processing workers
         }
 
         return fixed_params
