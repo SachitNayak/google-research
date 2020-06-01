@@ -1163,8 +1163,8 @@ class TemporalFusionTransformer(object):
 
     # Load best checkpoint again
     tmp_checkpont = self.get_keras_saved_path(self._temp_folder)
-    print("tmp_checkpoint: ", tmp_checkpont)
-    if os.path.exists(tmp_checkpont):
+    print("tmp_checkpoint: ", tmp_checkpont+'.index')
+    if os.path.exists(tmp_checkpont+'.index'):
       self.load(
           self._temp_folder,
           use_keras_loadings=True)
