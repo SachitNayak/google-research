@@ -103,6 +103,7 @@ class ArunimaFormatter(GenericDataFormatter):
         categorical_scalers = {}
         num_classes = []
         num_labels = [str(i) for i in range(1, 41)]
+        static_labels = [str(i) for i in range(1, 109)]
         day_labels = [str(i) for i in range(1, 8)]
         date_labels = [str(i) for i in range(1, 32)]
         month_labels = [str(i) for i in range(1, 13)]
@@ -121,7 +122,7 @@ class ArunimaFormatter(GenericDataFormatter):
             elif col == 'second':
                 vals = second_labels
             else:
-                vals = num_labels
+                vals = static_labels
 
             categorical_scalers[col] = sklearn.preprocessing.LabelEncoder().fit(
                 vals)
@@ -155,10 +156,14 @@ class ArunimaFormatter(GenericDataFormatter):
         categorical_inputs = utils.extract_cols_from_data_type(
             DataTypes.CATEGORICAL, column_definitions,
             {InputTypes.ID, InputTypes.TIME})
-
+        target_col_name = utils.get_single_col_by_input_type(InputTypes.TARGET,
+                                                             column_definitions)
+        target_data = df[target_col_name].values
+        old_shape = target_data.shape[0]
+        target_data = target_data.reshape(old_shape, 1)
+        output[target_col_name] = self._target_scaler.transform(target_data)
         # # Format real inputs
         # output[real_inputs] = self._real_scalers.transform(df[real_inputs].values)
-
         # Format categorical inputs
         for col in categorical_inputs:
             string_df = df[col].apply(str)
@@ -181,8 +186,10 @@ class ArunimaFormatter(GenericDataFormatter):
 
         for col in column_names:
             if col not in {'forecast_time', 'identifier'}:
-                # rounded_vals = np.round(predictions[col], decimals=0).astype('int64')
-                output[col] = self._target_scaler.inverse_transform(predictions[col])
+                target_data = predictions[col].values
+                old_shape = target_data.shape[0]
+                target_data = target_data.reshape(old_shape, 1)
+                output[col] = self._target_scaler.inverse_transform(target_data)
 
         return output
 
@@ -190,9 +197,11 @@ class ArunimaFormatter(GenericDataFormatter):
         """Returns fixed model parameters for experiments."""
 
         fixed_params = {
-            'total_time_steps': 9609 * 5,  # Total width of the Temporal Fusion Decoder
-            'num_encoder_steps': 9609,  # Length of LSTM decoder (ie. # historical inputs)
-            'num_epochs': 100,  # Max number of epochs for training
+            'total_time_steps': 500,  # Total width of the Temporal Fusion Decoder
+            'num_encoder_steps': 499,  # Length of LSTM decoder (ie. # historical inputs)
+            'num_epochs': 10,  # Max number of epochs for training
             'early_stopping_patience': 5,  # Early stopping threshold for # iterations with no loss improvement
-            'multiprocessing_workers': 5  # Number of multi-processing workers
+            'multiprocessing_workers': 10  # Number of multi-processing workers
         }
+
+        return fixed_params
