@@ -83,7 +83,7 @@ class ExperimentConfig(object):
         'electricity': 'hourly_electricity.csv',
         'traffic': 'hourly_data.csv',
         'favorita': 'favorita_consolidated.csv',
-        'arunima': 'f5_until_5_16_df.csv'
+        'arunima': 'f5_until_5_16_df_obs_535.csv'
     }
 
     return os.path.join(self.data_folder, csv_map[self.experiment])
