@@ -1386,6 +1386,6 @@ class TemporalFusionTransformer(object):
         'minibatch_size': np.linspace(256, 2048, num=3, dtype='int64'),
         'learning_rate': np.linspace(1e-3, 0.5, num=4),
         'max_gradient_norm': np.linspace(1e-3, 100, num=4),
-        'num_heads': np.linspace(8, 512, num=4, dtype='int64'),
-        'stack_size': np.linspace(8, 512, num=4, dtype='int64'),
+        'num_heads': np.linspace(8, 256, num=4, dtype='int64'),
+        'stack_size': np.linspace(8, 256, num=4, dtype='int64'),
     }
