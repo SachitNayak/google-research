@@ -1381,11 +1381,11 @@ class TemporalFusionTransformer(object):
   def get_hyperparm_choices(cls):
     """Returns hyperparameter ranges for random search."""
     return {
-        'dropout_rate': [0.1, 0.2, 0.3, 0.4, 0.5, 0.7, 0.9],
-        'hidden_layer_size': [10, 20, 40, 80, 160, 240, 320],
-        'minibatch_size': [64, 128, 256],
-        'learning_rate': [1e-4, 1e-3, 1e-2],
-        'max_gradient_norm': [0.01, 1.0, 100.0],
-        'num_heads': [1, 4],
-        'stack_size': [1],
+        'dropout_rate': np.linspace(0.1, 0.7, nums=3),
+        'hidden_layer_size': np.linspace(32, 256, nums=3),
+        'minibatch_size': np.linspace(256, 2048, nums=3),
+        'learning_rate': np.linspace(1e-3, 0.5, nums=4),
+        'max_gradient_norm': np.linspace(1e-3, 100, nums=4),
+        'num_heads': np.linspace(8, 1024, nums=4),
+        'stack_size': np.linspace(8, 2048, nums=4),
     }

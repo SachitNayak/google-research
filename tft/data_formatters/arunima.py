@@ -36,7 +36,7 @@ class ArunimaFormatter(GenericDataFormatter):
         ('n', DataTypes.REAL_VALUED, InputTypes.TARGET),
     ]
 
-    def split_data(self, df, valid_boundary=2017, test_boundary=2019):
+    def split_data(self, df, valid_boundary=2015, test_boundary=2017):
         """Splits data frame into training-validation-test data frames.
 
         This also calibrates scaling object, and transforms data for each split.
@@ -197,11 +197,20 @@ class ArunimaFormatter(GenericDataFormatter):
         """Returns fixed model parameters for experiments."""
 
         fixed_params = {
-            'total_time_steps': 225,  # Total width of the Temporal Fusion Decoder
-            'num_encoder_steps': 224,  # Length of LSTM decoder (ie. # historical inputs)
-            'num_epochs': 3,  # Max number of epochs for training
-            'early_stopping_patience': 2,  # Early stopping threshold for # iterations with no loss improvement
+            'total_time_steps': 7*5+1,  # Total width of the Temporal Fusion Decoder
+            'num_encoder_steps': 7*5,  # Length of LSTM decoder (ie. # historical inputs)
+            'num_epochs': 30,  # Max number of epochs for training
+            'early_stopping_patience': 10,  # Early stopping threshold for # iterations with no loss improvement
             'multiprocessing_workers': -1  # Number of multi-processing workers
         }
 
         return fixed_params
+
+    def get_num_samples_for_calibration(self):
+        """Gets the default number of training and validation samples.
+        Use to sub-sample the data for network calibration and a value of -1 uses
+        all available samples.
+        Returns:
+          Tuple of (training samples, validation samples)
+        """
+        return 15000, 8000

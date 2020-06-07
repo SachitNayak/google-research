@@ -91,7 +91,7 @@ class ExperimentConfig(object):
   @property
   def hyperparam_iterations(self):
 
-    return 240 if self.experiment == 'volatility' else 60
+    return 240 if self.experiment == 'arunima' else 60
 
   def make_data_formatter(self):
     """Gets a data formatter object for experiment.
