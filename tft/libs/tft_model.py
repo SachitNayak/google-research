@@ -1091,7 +1091,7 @@ class TemporalFusionTransformer(object):
             quantile_loss = QuantileLossCalculator(valid_quantiles).quantile_loss
 
             model.compile(
-                loss=quantile_loss, optimizer=adam, sample_weight_mode='temporal')
+                loss=tf.keras.losses.Huber(), optimizer=adam, sample_weight_mode='temporal')
 
             self._input_placeholder = all_inputs
 
