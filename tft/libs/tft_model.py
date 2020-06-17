@@ -1046,8 +1046,8 @@ class TemporalFusionTransformer(object):
 
             self._attention_components = attention_components
 
-            adam = tf.keras.optimizers.Adam(
-                lr=self.learning_rate, clipnorm=self.max_gradient_norm)
+            opt = tf.keras.optimizers.SGD(
+                learning_rate=self.learning_rate, momentum=0.9)
 
             model = tf.keras.Model(inputs=all_inputs, outputs=outputs)
 
@@ -1091,7 +1091,7 @@ class TemporalFusionTransformer(object):
             quantile_loss = QuantileLossCalculator(valid_quantiles).quantile_loss
 
             model.compile(
-                loss=quantile_loss, optimizer=adam, sample_weight_mode='temporal')
+                loss=quantile_loss, optimizer=opt, sample_weight_mode='temporal')
 
             self._input_placeholder = all_inputs
 
